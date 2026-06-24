@@ -128,6 +128,14 @@ var query = categories.GroupJoin(
     (c, ps) => new { Category = c.Name, Products = ps.DefaultIfEmpty() }
 ).SelectMany(x => x.Products.Select(p => new { x.Category, Product = p?.Name ?? "(none)" }));
 
+// Left Join (.NET 10+ — built-in operator)
+var query = products.LeftJoin(
+    categories,
+    p => p.CategoryId,
+    c => c.Id,
+    (p, c) => new { Product = p.Name, Category = c?.Name ?? "(none)" }
+);
+
 // INNER JOIN using Query Syntax (more readable)
 var query = from p in products
             join c in categories on p.CategoryId equals c.Id
@@ -519,6 +527,14 @@ await _context.Products
     .Where(p => p.CategoryId == oldCategoryId)
     .ExecuteUpdateAsync(setters => setters.SetProperty(p => p.CategoryId, newCategoryId));
 
+// EF Core 10 — regular lambdas instead of expression trees
+await _context.Products
+    .Where(p => p.CategoryId == oldCategoryId)
+    .ExecuteUpdateAsync(p => {
+        p.CategoryId = newCategoryId;
+        p.LastModified = DateTime.UtcNow;
+    });
+
 // Bulk delete
 await _context.Products
     .Where(p => p.IsDeleted && p.CreatedAt < DateTime.UtcNow.AddYears(-1))
@@ -552,7 +568,7 @@ await _context.Products
 │ Ordering:      .OrderBy(), .OrderByDescending(),         │
 │                .ThenBy(), .ThenByDescending()             │
 │ Grouping:      .GroupBy(), .ToLookup()                   │
-│ Joining:       .Join(), .GroupJoin(), .Zip()             │
+│ Joining:       .Join(), .LeftJoin(), .GroupJoin(), .Zip()│
 │ Aggregation:   .Count(), .Sum(), .Average(), .Min(),     │
 │                .Max(), .Aggregate()                       │
 │ Quantifiers:   .Any(), .All(), .Contains()               │
@@ -565,6 +581,24 @@ await _context.Products
 │                Immediate → .ToList(), .Count(), .First() │
 └──────────────────────────────────────────────────────────┘
 ```
+
+## 12. C# 14 / .NET 10 LINQ Additions
+
+### 12.1 Null-Conditional Assignment
+
+C# 14 allows assignment through null-conditional operators:
+
+```csharp
+// Before C# 14 — required intermediate variable
+if (person?.Address != null) {
+    person.Address.City = "New York";
+}
+
+// C# 14 — direct null-conditional assignment
+person?.Address.City = "New York";  // Only assigns if person?.Address is not null
+```
+
+---
 
 > **🎯 Exercise — LINQ Mastery Challenge:**
 > 1. Create a `List<Person>` with `Name`, `Age`, `City`

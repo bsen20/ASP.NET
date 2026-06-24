@@ -702,7 +702,55 @@ builder.Services.AddDbContext<AppDbContext>(options => {
 
 ---
 
-## 15. Key Takeaways
+## 15. EF Core 10 New Features
+
+### 15.1 Named Query Filters
+
+EF Core 10 supports **multiple named query filters** per entity and selective disabling:
+
+```csharp
+protected override void OnModelCreating(ModelBuilder modelBuilder) {
+    modelBuilder.Entity<Product>()
+        .HasQueryFilter("IsActive", p => !p.IsDeleted)
+        .HasQueryFilter("Tenant", p => p.TenantId == _currentTenantId);
+}
+
+// Disable specific filter
+var products = await _context.Products
+    .IgnoreQueryFilters("IsActive")
+    .ToListAsync();  // Only "Tenant" filter applies
+```
+
+### 15.2 LeftJoin Support
+
+Built-in `LeftJoin` operator (no more manual GroupJoin + SelectMany):
+
+```csharp
+var query = products.LeftJoin(
+    categories,
+    p => p.CategoryId,
+    c => c.Id,
+    (p, c) => new { Product = p.Name, Category = c?.Name ?? "(none)" }
+);
+```
+
+### 15.3 ExecuteUpdateAsync with Regular Lambdas
+
+`ExecuteUpdateAsync` now accepts regular lambdas instead of expression trees:
+
+```csharp
+// EF Core 10 — regular lambda (simpler)
+await _context.Products
+    .Where(p => p.CategoryId == oldCategoryId)
+    .ExecuteUpdateAsync(p => {
+        p.CategoryId = newCategoryId;
+        p.LastModified = DateTime.UtcNow;
+    });
+```
+
+---
+
+## 16. Key Takeaways
 
 | Concept | Key Point |
 |---------|-----------|

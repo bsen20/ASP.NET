@@ -211,6 +211,8 @@ public ActionResult<Product> Get(int id) {
 ## 5. Minimal APIs (Alternative to Controllers)
 
 > **When to use:** Simple APIs, microservices, small endpoints. Controllers for larger projects.
+>
+> **ASP.NET Core 10** includes built-in OpenAPI 3.1 support and automatic validation in Minimal APIs — no extra packages needed.
 
 ```csharp
 var app = builder.Build();

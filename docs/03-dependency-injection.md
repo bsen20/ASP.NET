@@ -276,7 +276,7 @@ public class ProductsController : ControllerBase {
 }
 ```
 
-### 6.4 Keyed Services (.NET 8+)
+### 6.4 Keyed Services (.NET 10+)
 
 ```csharp
 // Register with a key

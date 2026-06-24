@@ -139,7 +139,7 @@ builder.Services.AddScoped<IRepo, MyRepo>();
 // MyService will capture the first MyRepo forever
 ```
 
-**Detection:** .NET 8+ validates at startup. Also check with analyzers.
+**Detection:** .NET 10+ validates at startup. Also check with analyzers.
 
 ### Q13: How do you register multiple implementations of the same interface?
 **A:** Register each implementation, then inject `IEnumerable<T>`:

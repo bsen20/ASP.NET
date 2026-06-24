@@ -13,17 +13,19 @@ timeline
     2019 : .NET Core 3.1 (LTS)
     2020 : .NET 5 (Unified platform, no more "Core")
     2022 : .NET 6 (LTS)
-    2023 : .NET 8 (LTS)
-    2024 : .NET 9 (Current)
+     2025 : .NET 10 (LTS)
+     2026 : .NET 11 (Current)
 ```
 
 | Flavor | What it is | When to use |
 |--------|-----------|-------------|
 | **.NET Framework** | Legacy, Windows-only (4.8.x) | Old enterprise apps. Don't start new projects. |
 | **.NET Core** | Cross-platform, open-source (3.1) | Historic. Now called just ".NET". |
-| **.NET 5/6/7/8/9** | The modern .NET — one platform for all | **Always use this for new projects.** |
+| **.NET 5/6/7/8/9/10/11** | The modern .NET — one platform for all | **Always use this for new projects.** |
 
-> **Your choice:** .NET 8 or .NET 9 (both LTS or current). We'll use **.NET 8** throughout.
+> **Your choice:** .NET 10 (LTS). We'll use **.NET 10** throughout.
+>
+> **Note:** .NET 10 is the latest LTS release (November 2025), supported until November 10, 2028.
 
 ---
 
@@ -33,7 +35,7 @@ timeline
 # 1. Download SDK from https://dotnet.microsoft.com/download
 # 2. Verify installation
 dotnet --version
-# Output: 8.0.xxx
+# Output: 10.0.xxx
 
 # 3. Your first app
 dotnet new console -n HelloDotnet
@@ -201,13 +203,13 @@ MyApi/
 ```xml
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
   </ItemGroup>
 </Project>
 ```

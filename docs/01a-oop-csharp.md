@@ -1,6 +1,8 @@
 # 01a — Object-Oriented Programming in C# (Deep Dive)
 
 > **Prerequisite:** You know Java OOP — this doc covers **what's the same** and **what's different** in C#.
+>
+> **C# 14 (.NET 10):** New features include the `field` keyword for auto-property access and `extension` members (extension everything).
 
 ---
 
